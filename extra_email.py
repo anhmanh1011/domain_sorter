@@ -14,22 +14,29 @@ def extract_emails_from_file(filename):
     file_path = os.path.join(folder_path, f'emails.txt')
     with open(filename, 'r', encoding='utf-8') as file:
         for line in file:
-            print(line)
-            if format_type == 1:
+            try:
+                print(line)
                 parts = line.strip().split(':')
                 if len(parts) == 4:  # Ensure the line is correctly formatted
                     protocol, url, email, password = parts
                     if is_email(email):
                         emails.append(email)
-                        with open(file_path, 'a') as file2:
+                        with open(file_path, 'a', encoding='utf-8') as file2:
                             file2.write(email + ":" + password + "\n")
-
+            except Exception as ex:
+                ex.with_traceback()
 
 
 def main():
-    print("Please drag and drop your text file into this window or type the file path, then press Enter:")
-    input_file_path = input().strip().strip('"')
-    extract_emails_from_file(input_file_path)
+    try:
+        print("Please drag and drop your text file into this window or type the file path, then press Enter:")
+        input_file_path = input().strip().strip('"')
+        extract_emails_from_file(input_file_path)
+        input()
+    except Exception as ex:
+        ex.with_traceback()
+        print(ex)
+        input()
 
 
 if __name__ == "__main__":
